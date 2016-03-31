@@ -1,12 +1,13 @@
 package View;
 
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JButton;
-import java.awt.GridLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 
 public class PersonUI extends JFrame {
@@ -17,6 +18,7 @@ public class PersonUI extends JFrame {
 	 * Create the frame.
 	 */
 	public PersonUI() {
+		setTitle("SICATROLI");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -27,6 +29,7 @@ public class PersonUI extends JFrame {
 		JButton CadastrarButton = new JButton("Cadastrar");
 		CadastrarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				CadastrarDialog window2 = new CadastrarDialog();
 			}
 		});
 		contentPane.add(CadastrarButton);
