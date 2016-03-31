@@ -1,7 +1,7 @@
 package View;
-import java.awt.FlowLayout;
 
-import javax.swing.JFrame;
+import java.awt.EventQueue;
+
 //use @Test para marcar os métodos para teste;
 
 /*
@@ -37,5 +37,20 @@ public class Main{
 	    System.out.println("Licensa GPL Versão 3");
 	    System.out.println("SIstema de CAdastramento e TROca de LIvros");
 	    
+		/**
+		 * Launch the application.
+		 */
+
+	    EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					PersonUI userInterfaceInitial = new PersonUI();
+					userInterfaceInitial.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}    
 }
 
