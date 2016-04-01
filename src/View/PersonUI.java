@@ -1,5 +1,6 @@
 package View;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 
@@ -32,13 +34,13 @@ public class PersonUI extends JFrame {
 				CadastrarDialog window2 = new CadastrarDialog();
 			}
 		});
-		contentPane.add(CadastrarButton);
+		contentPane.add(CadastrarButton, BorderLayout.PAGE_START);
 		
 		JButton trocarButton = new JButton("Trocar");
-		contentPane.add(trocarButton);
+		contentPane.add(trocarButton, BorderLayout.PAGE_END);
 		
 		JButton pesquisarButton = new JButton("Pesquisar");
-		contentPane.add(pesquisarButton);
+		contentPane.add(pesquisarButton, BorderLayout.CENTER);
 	}
 
 }

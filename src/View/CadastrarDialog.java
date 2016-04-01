@@ -1,10 +1,19 @@
 package View;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 class CadastrarDialog extends JFrame
 {
-JDialog d1;
+JDialog dialogCadastro;
+public static final String[] arrayGrandesAreas = { "Literatura", "Ciências Exatas", "Generalidades", "Geografia e História" };
 
     public CadastrarDialog()
     {
@@ -24,17 +33,43 @@ JDialog d1;
         // A perfect constructor, mostly used.
         // A dialog with current frame as parent
         // a given title, and modal
-        d1=new JDialog(this,"This is title",true);
+        dialogCadastro=new JDialog(this,"Cadastrar Livro",true);
         
         // Set size
-        d1.setSize(400,400);
+        dialogCadastro.setSize(600,400);
         
         // Set some layout
-        d1.setLayout(new FlowLayout());
+        dialogCadastro.setLayout(new FlowLayout());
         
-        d1.add(new JButton("Button"));
-        d1.add(new JLabel("Label"));
-        d1.add(new JTextField(20));
+
+        dialogCadastro.add(new JLabel("Nome do Livro"));
+        dialogCadastro.add(new JTextField(20));
+        
+        dialogCadastro.add(new JLabel("Escolha a grande área do conhecimento clicando no botão abaixo."));
+        
+        JButton buttonGrandeArea = new JButton("Grande Área");
+        
+        buttonGrandeArea.addActionListener( new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String stringGrandeAreas = (String) JOptionPane.showInputDialog(dialogCadastro, 
+		                "Qual é a Grande Área do Conhecimento?",
+		                "Grande Área do Conhecimento",
+		                JOptionPane.QUESTION_MESSAGE, 
+		                null, 
+		                arrayGrandesAreas, 
+		                arrayGrandesAreas[0]);
+			}
+		});
+        dialogCadastro.add(buttonGrandeArea);
+        
+        dialogCadastro.add(new JLabel("Autor"));
+        dialogCadastro.add(new JTextField(20));
+
+        dialogCadastro.add(new JLabel("Editora"));
+        dialogCadastro.add(new JTextField(20));
+        
+        dialogCadastro.add(new JButton("Enviar"));
         
         setSize(400,400);
         setVisible(true);
@@ -43,6 +78,6 @@ JDialog d1;
         // have to make it visible
         // Remember to show JDialog after its parent is
         // shown so that its parent is visible
-        d1.setVisible(true);
+        dialogCadastro.setVisible(true);
     }
 }
