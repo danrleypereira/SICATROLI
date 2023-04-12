@@ -12,5 +12,9 @@ dotnet dev-certs https --trust
 dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design -v 7.0.5
 dotnet add package Microsoft.EntityFrameworkCore.Design -v 7.0.4
 dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL -v 7.0.3
-dotnet tool uninstall -g dotnet-aspnet-codegenerator
-dotnet tool install -g dotnet-aspnet-codegenerator
+
+## create migrations
+dotnet tool install --global dotnet-ef
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+
