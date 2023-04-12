@@ -1,1 +1,0 @@
-## We`ll build up this app using a modern javascript framework.
