@@ -21,3 +21,7 @@ dotnet ef database update
 ## installing packages
 inside the folder in the terminal run: 
 dotnet restore
+
+## creating Models
+everytime you create a model you need to put the getters and setters 
+because Entity Framework ignores read-only properties.
