@@ -1,14 +1,14 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace dal.Models;
+namespace backend.Models;
 [Table("category")]
 public class Category
 {   
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("category_id")]
-    public int Id { get; set; }
+    public int CategoryId { get; set; }
     [Column("genre")]
     public string Genre { get; set; }
     [Column("pages")]

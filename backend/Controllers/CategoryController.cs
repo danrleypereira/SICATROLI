@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using backend.Services;
+using backend.Models;
 
-using dal.Services;
-using dal.Models;
-
-namespace dal.Controllers
+namespace backend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -40,13 +39,13 @@ namespace dal.Controllers
         public async Task<ActionResult<Category>> AddCategory(Category category)
         {
             var addedCategory = await _categoryService.AddCategoryAsync(category);
-            return CreatedAtAction(nameof(GetCategory), new { id = addedCategory.Id }, addedCategory);
+            return CreatedAtAction(nameof(GetCategory), new { id = addedCategory.CategoryId }, addedCategory);
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<Category>> UpdateCategory(int id, Category category)
         {
-            if (id != category.Id)
+            if (id != category.CategoryId)
             {
                 return BadRequest();
             }
@@ -59,17 +58,5 @@ namespace dal.Controllers
 
             return Ok(updatedCategory);
         }
-
-        // [HttpDelete("{id}")]
-        // public async Task<ActionResult<Category>> DeleteCategory(int id)
-        // {
-        //     var deletedCategory = await _categoryService.DeleteCategoryAsync(id);
-        //     if (deletedCategory == null)
-        //     {
-        //         return NotFound();
-        //     }
-
-        //     return Ok(deletedCategory);
-        // }
     }
 }

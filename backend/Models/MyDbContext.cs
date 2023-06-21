@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using dal.Models;
-namespace dal.Models
+using backend.Models;
+namespace backend.Models
 {
     public class MyDbContext : DbContext
     {

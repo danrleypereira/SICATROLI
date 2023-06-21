@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using dal.Models;
-using dal.Services;
+using backend.Models;
+using backend.Services;
 
-namespace dal.Services
+namespace backend.Services
 {
     public class CategoryService : ICategoryService
     {
@@ -45,9 +45,9 @@ namespace dal.Services
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CategoryExists(category.Id))
+                if (!CategoryExists(category.CategoryId))
                 {
-                    throw new ArgumentException($"Category with id {category.Id} not found.");
+                    throw new ArgumentException($"Category with id {category.CategoryId} not found.");
                 }
 
                 throw;
@@ -70,7 +70,7 @@ namespace dal.Services
 
         private bool CategoryExists(int id)
         {
-            return _context.Categories.Any(e => e.Id == id);
+            return _context.Categories.Any(e => e.CategoryId == id);
         }
     }
 }

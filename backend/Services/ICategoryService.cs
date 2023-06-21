@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using dal.Models;
+using backend.Models;
 
-namespace dal.Services
+namespace backend.Services
 {
     public interface ICategoryService
     {

@@ -28,4 +28,4 @@ COPY --from=build-env /app/out .
 EXPOSE 5000
 
 # Start the application when the container starts
-ENTRYPOINT ["dotnet", "dal.dll"]
+ENTRYPOINT ["dotnet", "backend.dll"]

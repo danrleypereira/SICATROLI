@@ -1,13 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace dal.Models;
+namespace backend.Models;
 [Table("institution")]
 public class Institution
 {
     [Key]
-    [Column("organization_id")]
-    public string organization_id { get; set; }
+    [Column("institution_id")]
+    public string institution_id { get; set; }
     [Column("moderator_id")]
     public String Moderator_id { get; set; }
     [ForeignKey("guardian_id")]

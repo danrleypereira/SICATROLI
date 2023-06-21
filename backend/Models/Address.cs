@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
 
-namespace dal.Models;
+namespace backend.Models;
 [Table("address")]
 public class Address
 {

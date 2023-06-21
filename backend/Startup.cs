@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
-using dal.Models;
-using dal.Services;
+using backend.Models;
+using backend.Services;
 
 namespace dal
 {

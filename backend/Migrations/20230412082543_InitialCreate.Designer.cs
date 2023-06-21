@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using dal.Models;
+using backend.Models;
 
 #nullable disable
 
-namespace dal.Migrations
+namespace backend.Migrations
 {
     [DbContext(typeof(MyDbContext))]
     [Migration("20230412082543_InitialCreate")]
@@ -59,7 +59,7 @@ namespace dal.Migrations
                     b.ToTable("Readers");
                 });
 
-            modelBuilder.Entity("dal.Models.Category", b =>
+            modelBuilder.Entity("backend.Models.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
