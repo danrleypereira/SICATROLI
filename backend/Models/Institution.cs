@@ -7,7 +7,7 @@ public class Institution
 {
     [Key]
     [Column("institution_id")]
-    public int institution_id { get; set; }
+    public int InstitutionId { get; set; }
     [Column("moderator_id")]
     public String Moderator_id { get; set; }
     [InverseProperty("Institution")]
