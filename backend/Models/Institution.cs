@@ -6,18 +6,30 @@ namespace backend.Models;
 public class Institution
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("institution_id")]
     public int InstitutionId { get; set; }
     [Column("moderator_id")]
     public String Moderator_id { get; set; }
     [InverseProperty("Institution")]
-    public ICollection<Guardian> guardians { get; set; }
+    public ICollection<Guardian>? guardians { get; set; }
     [Column("name")]
     [Required]
-    public string Name { get; set; }
+    public string? Name { get; set; }
     //[Column("address_id")]
     //[ForeignKey("address_id")]
     //public Address AddressId { get; set; }
     [Column("telephone")]
-    public String Telephone { get; set; }
+    public String? Telephone { get; set; }
+}
+
+public class InstitutionDto
+{
+    public int InstitutionId { get; set; }
+
+    public String ModeratorId { get; set; }
+
+    public string Name { get; set; }
+
+    public string? Telephone { get; set; }
 }

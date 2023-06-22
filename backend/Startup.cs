@@ -27,6 +27,7 @@ namespace dal
 
       // Add application services
       services.AddScoped<ICategoryService, CategoryService>();
+      services.AddScoped<IInstitutionService, InstitutionService>();
 
       // Add Swagger generator and UI
       services.AddSwaggerGen(c =>

@@ -27,9 +27,15 @@ namespace backend.Services
             return await _context.Institutions.FindAsync(id);
         }
 
-        public async Task<Institution> AddInstitutionAsync(Institution institution)
+        public async Task<InstitutionDto> AddInstitutionAsync(InstitutionDto institution)
         {
-            await _context.Institutions.AddAsync(institution);
+            Institution institutionEntity = new Institution{
+                guardians = null,
+                Name = institution.Name,
+                Telephone = institution.Telephone,
+                Moderator_id = institution.ModeratorId
+            };
+            await _context.Institutions.AddAsync(institutionEntity);
             await _context.SaveChangesAsync();
 
             return institution;

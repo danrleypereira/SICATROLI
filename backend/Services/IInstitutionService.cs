@@ -8,7 +8,7 @@ namespace backend.Services
     {
         Task<IEnumerable<Institution>> GetInstitutionsAsync();
         Task<Institution> GetInstitutionByIdAsync(int id);
-        Task<Institution> AddInstitutionAsync(Institution institution);
+        Task<InstitutionDto> AddInstitutionAsync(InstitutionDto institution);
         Task<Institution> UpdateInstitutionAsync(Institution institution);
         Task DeleteInstitutionAsync(int id);
     }

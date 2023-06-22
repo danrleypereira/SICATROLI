@@ -36,7 +36,7 @@ namespace backend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Institution>> AddInstitution(Institution institution)
+        public async Task<ActionResult<InstitutionDto>> AddInstitution(InstitutionDto institution)
         {
             var addedInstitution = await _institutionService.AddInstitutionAsync(institution);
             return CreatedAtAction(nameof(GetInstitution), new { id = addedInstitution.InstitutionId }, addedInstitution);
