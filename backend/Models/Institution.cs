@@ -15,7 +15,7 @@ public class Institution
     public ICollection<Guardian>? guardians { get; set; }
     [Column("name")]
     [Required]
-    public string? Name { get; set; }
+    public string Name { get; set; }
     //[Column("address_id")]
     //[ForeignKey("address_id")]
     //public Address AddressId { get; set; }

@@ -29,11 +29,12 @@ namespace backend.Services
 
         public async Task<InstitutionDto> AddInstitutionAsync(InstitutionDto institution)
         {
+            string token = TokenUtils.GenerateToken();
             Institution institutionEntity = new Institution{
                 guardians = null,
                 Name = institution.Name,
                 Telephone = institution.Telephone,
-                Moderator_id = institution.ModeratorId
+                Moderator_id = token
             };
             await _context.Institutions.AddAsync(institutionEntity);
             await _context.SaveChangesAsync();
