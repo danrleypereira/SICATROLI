@@ -1,0 +1,27 @@
+.genreBody{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    height: 100%;
+}
+
+.genreHeader{
+    display: flex;
+    flex-direction: row;
+    padding: 0 2rem;
+    justify-content: space-between;
+}
+
+.genreHeader h1{
+    font-size: 50px;
+    color: white;
+    padding: 1rem;
+}
+
+.genreButtons{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+}

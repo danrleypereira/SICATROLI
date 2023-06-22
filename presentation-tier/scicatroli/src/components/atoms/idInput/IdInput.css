@@ -1,0 +1,37 @@
+@import '../../../assets/colors.css';
+.homeInput{
+    display: flex;
+    width: fit-content;
+    padding: 1rem;
+    justify-content: center;
+    align-content: center;
+    background-color: var(--dark-blue);
+}
+
+.homeInput input{
+    padding: 1rem;
+    background-color: var(--darker-blue);
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.hide{
+    display: none;
+}
+
+.show{
+    display: flex;
+    animation: appear 1s;
+}
+
+@keyframes appear {
+    0%{
+        transform: scale(0);
+    }
+
+    100%{
+        transform: scale(1);
+    }
+}
