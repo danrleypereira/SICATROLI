@@ -23,13 +23,8 @@ public class Institution
     public String? Telephone { get; set; }
 }
 
-public class InstitutionDto
+public class CreateInstitutionDto
 {
-    public int InstitutionId { get; set; }
-
-    public String ModeratorId { get; set; }
-
     public string Name { get; set; }
-
     public string? Telephone { get; set; }
 }

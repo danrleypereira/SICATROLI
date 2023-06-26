@@ -16,21 +16,11 @@ namespace backend.Services
         {
             _context = context;
         }
-
-        public async Task<IEnumerable<Institution>> GetInstitutionsAsync()
-        {
-            return await _context.Institutions.ToListAsync();
-        }
-
-        public async Task<Institution> GetInstitutionByIdAsync(int id)
-        {
-            return await _context.Institutions.FindAsync(id);
-        }
-
-        public async Task<InstitutionDto> AddInstitutionAsync(InstitutionDto institution)
+        public async Task<CreateInstitutionDto> CreateInstitutionAsync(CreateInstitutionDto institution)
         {
             string token = TokenUtils.GenerateToken();
-            Institution institutionEntity = new Institution{
+            Institution institutionEntity = new Institution
+            {
                 guardians = null,
                 Name = institution.Name,
                 Telephone = institution.Telephone,
@@ -42,6 +32,16 @@ namespace backend.Services
             return institution;
         }
 
+        //starting examples
+        public async Task<IEnumerable<Institution>> GetInstitutionsAsync()
+        {
+            return await _context.Institutions.ToListAsync();
+        }
+
+        public async Task<Institution> GetInstitutionByIdAsync(int id)
+        {
+            return await _context.Institutions.FindAsync(id);
+        }
         public async Task<Institution> UpdateInstitutionAsync(Institution institution)
         {
             _context.Entry(institution).State = EntityState.Modified;
@@ -79,5 +79,6 @@ namespace backend.Services
         {
             return _context.Institutions.Any(e => e.InstitutionId == id);
         }
+        //ending examples
     }
 }

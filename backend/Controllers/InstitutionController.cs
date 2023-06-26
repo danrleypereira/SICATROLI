@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using backend.Services;
 using backend.Models;
@@ -16,7 +14,14 @@ namespace backend.Controllers
         {
             _institutionService = institutionService;
         }
-
+        [HttpPost]
+        public async Task<ActionResult<CreateInstitutionDto>> CreateInstitution(CreateInstitutionDto institution)
+        {
+            Institution institutionEntity = new Institution();
+            var addedInstitution = await _institutionService.CreateInstitutionAsync(institution);
+            return CreatedAtAction(nameof(GetInstitution), new { id = institutionEntity.InstitutionId }, addedInstitution);
+        }
+        //starting examples
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Institution>>> GetInstitutions()
         {
@@ -34,14 +39,6 @@ namespace backend.Controllers
             }
             return Ok(institution);
         }
-
-        [HttpPost]
-        public async Task<ActionResult<InstitutionDto>> AddInstitution(InstitutionDto institution)
-        {
-            var addedInstitution = await _institutionService.AddInstitutionAsync(institution);
-            return CreatedAtAction(nameof(GetInstitution), new { id = addedInstitution.InstitutionId }, addedInstitution);
-        }
-
         [HttpPut("{id}")]
         public async Task<ActionResult<Institution>> UpdateInstitution(int id, Institution institution)
         {
@@ -58,5 +55,6 @@ namespace backend.Controllers
 
             return Ok(updatedInstitution);
         }
+        //ending examples
     }
 }
