@@ -8,13 +8,11 @@ public static class TokenUtils
     public static string GenerateToken()
     {
         byte[] randomBytes = new byte[TokenLength];
-        using (RNGCryptoServiceProvider rngCryptoServiceProvider = new RNGCryptoServiceProvider())
+        using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
         {
-            rngCryptoServiceProvider.GetBytes(randomBytes);
+            rng.GetBytes(randomBytes);
         }
 
         return Convert.ToBase64String(randomBytes);
     }
 }
-//  string token = TokenUtils.GenerateToken();
-//  Console.WriteLine(token);
