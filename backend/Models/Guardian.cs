@@ -12,7 +12,13 @@ public class Guardian
     [Column("book_id")]
     public int BookId { get; set; }
     [Column("email")]
-    public string? Email { get; set; }
+    public string Email { get; set; }
     [ForeignKey("institution_id")]
     public Institution Institution { get; set; }
+}
+public class GuardianDto
+{
+    public int BookId { get; set; }
+    public string GuardianId { get; set; }
+    public string email { get; set; }
 }

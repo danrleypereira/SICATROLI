@@ -10,7 +10,7 @@ public class Institution
     [Column("institution_id")]
     public int InstitutionId { get; set; }
     [Column("moderator_id")]
-    public String Moderator_id { get; set; }
+    public String ModeratorId { get; set; }
     [InverseProperty("Institution")]
     public ICollection<Guardian>? guardians { get; set; }
     [Column("name")]

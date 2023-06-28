@@ -18,7 +18,7 @@ namespace backend.Services
                 guardians = null,
                 Name = institution.Name,
                 Telephone = institution.Telephone,
-                Moderator_id = token
+                ModeratorId = token
             };
             await _context.Institutions.AddAsync(institutionEntity);
             await _context.SaveChangesAsync();
