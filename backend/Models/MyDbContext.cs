@@ -13,6 +13,7 @@ namespace backend.Models
         public DbSet<Institution> Institutions { get; set; }
         public DbSet<Address> Address { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Book> Books { get; set; }
 
         // With this approach, you no longer need to hard-code the connection string in the OnConfiguring method, and you can easily switch between different database providers and connection strings just by modifying the appsettings.json file.
         // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
