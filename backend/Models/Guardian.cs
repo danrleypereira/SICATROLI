@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.Models;
-[Table("guardian")]
+[Table("Guardians")]
 public class Guardian
 {
     [Key]

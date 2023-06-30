@@ -8,8 +8,12 @@ namespace backend.Models
 {
     public class MyDbContext : DbContext
     {
+        public MyDbContext()
+        {
+        }
+
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options) { }
-        public DbSet<Guardian> Guardians { get; set; }
+        public DbSet<Guardian> guardian { get; set; }
         public DbSet<Institution> Institutions { get; set; }
         public DbSet<Address> Address { get; set; }
         public DbSet<Category> Categories { get; set; }
