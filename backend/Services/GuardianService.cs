@@ -8,10 +8,6 @@ namespace backend.Services
         private readonly MyDbContext _context;
         private readonly UserManager<Guardian> _userManager;
         private readonly SignInManager<Guardian> _signInManager;
-        public GuardianService(MyDbContext context)
-        {
-            _context = context;
-        }
         public GuardianService(DbContextOptions<MyDbContext> options)
         {
             _context = new MyDbContext(options);
