@@ -10,13 +10,22 @@ services:
       - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
+  # add ssl support to app
+  # https://docs.microsoft.com/en-us/aspnet/core/security/docker-compose-https?view=aspnetcore-3.1
   app:
     build: .
     ports:
-      - "5003:5000"
+      - "5000:5000"
+      - "5005:5005"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=mydatabase;Username=postgres;Password=changeme
+      - ASPNETCORE_URLS=https://+:5005;http://+:5000
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certificate.pfx
+      - ASPNETCORE_HTTPS_PORT=5005
+    volumes:
+      - ./certificate.pfx:/app/certificate.pfx
     depends_on:
       - db
 volumes:

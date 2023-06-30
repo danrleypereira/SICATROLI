@@ -51,6 +51,11 @@ namespace dal
       }
 
       app.UseRouting();
+      app.UseCors(x => x
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+      );
 
       app.UseEndpoints(endpoints =>
       {
