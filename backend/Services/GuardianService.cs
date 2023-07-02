@@ -6,7 +6,6 @@ namespace backend.Services
     public class GuardianService : IGuardianService
     {
         private readonly MyDbContext _context;
-        private readonly UserManager<Guardian> _userManager;
         private readonly SignInManager<Guardian> _signInManager;
         public GuardianService(DbContextOptions<MyDbContext> options)
         {
@@ -14,7 +13,7 @@ namespace backend.Services
         }
         private bool ValidateToken(string token)
         {
-            var user =  _context.guardian.FirstOrDefault(u => u.GuardianId == token);
+            Guardian user = _context.guardian.FirstOrDefault(u => u.GuardianId == token);
             return user != null;
         }
         public async Task<GuardianDto> LoginUserAsync(GuardianDto guardianDto, string token)
@@ -27,21 +26,21 @@ namespace backend.Services
             }
             return guardianDto;
         }
-        public async Task<GuardianDto> AddGuardianAsync(GuardianDto guardianDto)
+        public async Task<Guardian> AddGuardianAsync(GuardianDto guardianDto, String moderator)
         {
             string token = TokenUtils.GenerateToken();
+            Institution institution = _context.Institutions.FirstOrDefault(e => e.ModeratorId == moderator);
             Guardian GuardianEntity = new Guardian
             {
                 GuardianId = token,
                 BookId = guardianDto.BookId,
                 Email = guardianDto.email,
-
+                Institution = institution,
             };
             await _context.guardian.AddAsync(GuardianEntity);
             await _context.SaveChangesAsync();
-            return guardianDto;
+            return GuardianEntity;
         }
-
         public async Task DeleteGuardianAsync(string id)
         {
             var Guardian = await _context.guardian.FindAsync(id);
@@ -53,17 +52,14 @@ namespace backend.Services
             _context.guardian.Remove(Guardian);
             await _context.SaveChangesAsync();
         }
-
         public async Task<Guardian> GetGuardianByIdAsync(string id)
         {
             return await _context.guardian.FindAsync(id);
         }
-
-        public  async Task<IEnumerable<Guardian>> GetGuardiansAsync()
+        public async Task<IEnumerable<Guardian>> GetGuardiansAsync()
         {
             return await _context.guardian.ToListAsync();
         }
-
         public async Task<Guardian> UpdateGuardianAsync(Guardian guardian)
         {
             _context.Entry(guardian).State = EntityState.Modified;
@@ -81,13 +77,11 @@ namespace backend.Services
 
                 throw;
             }
-
             return guardian;
         }
         private bool GuardianExists(string id)
         {
             return _context.guardian.Any(e => e.GuardianId == id);
         }
-
     }
 }

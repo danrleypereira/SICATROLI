@@ -9,12 +9,14 @@ namespace backend.Controllers
     public class GuardianController : ControllerBase
     {
         private readonly IGuardianService _guardianService;
-        public GuardianController(IGuardianService guardianService)
+        private readonly IInstitutionService _institutionService;
+        public GuardianController(IGuardianService guardianService, IInstitutionService institutionService)
         {
             _guardianService = guardianService;
+            _institutionService = institutionService;
         }
-    
-    [HttpGet("{id}")]
+
+        [HttpGet("{id}")]
         public async Task<ActionResult<Guardian>> GetGuardian(string id)
         {
             var guardian = await _guardianService.GetGuardianByIdAsync(id);
@@ -24,14 +26,19 @@ namespace backend.Controllers
             }
             return Ok(guardian);
         }
-    [HttpPost]
-        public async Task<ActionResult<GuardianDto>> AddGuardian(GuardianDto guardian)
+        [HttpPost]
+        public async Task<ActionResult<Guardian>> AddGuardian(
+                [FromBody] GuardianDto guardian,
+                [FromHeader] string authorization)
         {
-            Guardian guardianEntity = new Guardian();
-            var addedGuardian = await _guardianService.AddGuardianAsync(guardian);
-            return CreatedAtAction(nameof(GetGuardian), new { id = guardianEntity.GuardianId }, addedGuardian);
+            if (! (await _institutionService.CheckModeratorToken(authorization)) )
+            {
+                return Unauthorized();
+            }
+            var addedGuardian = await _guardianService.AddGuardianAsync(guardian, authorization.Split(" ")[1]);
+            return CreatedAtAction(nameof(GetGuardian), new { id = addedGuardian.GuardianId }, addedGuardian);
         }
-    [HttpPut("{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult<Guardian>> UpdateGuardian(string id, Guardian guardian)
         {
             if (id != guardian.GuardianId)

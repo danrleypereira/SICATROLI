@@ -15,8 +15,15 @@ namespace backend.Controllers
             _institutionService = institutionService;
         }
         [HttpPost]
-        public async Task<ActionResult<CreateInstitutionDto>> CreateInstitution(CreateInstitutionDto institution)
+        public async Task<ActionResult<CreateInstitutionDto>> CreateInstitution(
+            [FromHeader] String authorization, 
+            [FromBody] CreateInstitutionDto institution
+        )
         {
+            if (!authorization.Contains("sdfgbhn"))
+            {
+                return Unauthorized();
+            }
             Institution institutionEntity = new Institution();
             var addedInstitution = await _institutionService.CreateInstitutionAsync(institution);
             return CreatedAtAction(nameof(GetInstitution), new { id = institutionEntity.InstitutionId }, addedInstitution);

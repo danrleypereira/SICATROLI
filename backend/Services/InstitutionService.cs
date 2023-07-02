@@ -5,7 +5,6 @@ namespace backend.Services
     public class InstitutionService : IInstitutionService
     {
         private readonly MyDbContext _context;
-
         public InstitutionService(MyDbContext context)
         {
             _context = context;
@@ -25,13 +24,11 @@ namespace backend.Services
 
             return institution;
         }
-
         //starting examples
         public async Task<IEnumerable<Institution>> GetInstitutionsAsync()
         {
             return await _context.Institutions.ToListAsync();
         }
-
         public async Task<Institution> GetInstitutionByIdAsync(int id)
         {
             return await _context.Institutions.FindAsync(id);
@@ -39,7 +36,6 @@ namespace backend.Services
         public async Task<Institution> UpdateInstitutionAsync(Institution institution)
         {
             _context.Entry(institution).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -53,10 +49,8 @@ namespace backend.Services
 
                 throw;
             }
-
             return institution;
         }
-
         public async Task DeleteInstitutionAsync(int id)
         {
             var institution = await _context.Institutions.FindAsync(id);
@@ -64,14 +58,17 @@ namespace backend.Services
             {
                 throw new ArgumentException($"Institution with id {id} not found.");
             }
-
             _context.Institutions.Remove(institution);
             await _context.SaveChangesAsync();
         }
-
         private bool InstitutionExists(int id)
         {
             return _context.Institutions.Any(e => e.InstitutionId == id);
+        }
+        public Task<bool> CheckModeratorToken(string authorization)
+        {
+            string token = authorization.Split(" ")[1];
+            return _context.Institutions.AnyAsync(e => e.ModeratorId == token);
         }
         //ending examples
     }
