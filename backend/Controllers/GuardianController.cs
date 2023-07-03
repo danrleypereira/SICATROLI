@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Services;
 using backend.Models;
-
+using AutoMapper;
 namespace backend.Controllers
 {
     [ApiController]
@@ -10,12 +10,13 @@ namespace backend.Controllers
     {
         private readonly IGuardianService _guardianService;
         private readonly IInstitutionService _institutionService;
-        public GuardianController(IGuardianService guardianService, IInstitutionService institutionService)
+        private readonly IMapper _mapper;
+        public GuardianController(IGuardianService guardianService, IInstitutionService institutionService, IMapper mapper)
         {
             _guardianService = guardianService;
             _institutionService = institutionService;
+            _mapper = mapper;
         }
-
         [HttpGet("{id}")]
         public async Task<ActionResult<Guardian>> GetGuardian(string id)
         {
@@ -27,16 +28,18 @@ namespace backend.Controllers
             return Ok(guardian);
         }
         [HttpPost]
-        public async Task<ActionResult<Guardian>> AddGuardian(
-                [FromBody] GuardianDto guardian,
+        public async Task<ActionResult<GuardianResponseDto>> AddGuardian(
+                [FromBody] CreateGuardianRequestDto guardianRequestDto,
                 [FromHeader] string authorization)
         {
             if (! (await _institutionService.CheckModeratorToken(authorization)) )
             {
                 return Unauthorized();
             }
+            var guardian = _mapper.Map<Guardian>(guardianRequestDto);
             var addedGuardian = await _guardianService.AddGuardianAsync(guardian, authorization.Split(" ")[1]);
-            return CreatedAtAction(nameof(GetGuardian), new { id = addedGuardian.GuardianId }, addedGuardian);
+            var responseDto = _mapper.Map<GuardianResponseDto>(addedGuardian);
+            return CreatedAtAction(nameof(GetGuardian), new { id = addedGuardian.GuardianId }, responseDto);
         }
         [HttpPut("{id}")]
         public async Task<ActionResult<Guardian>> UpdateGuardian(string id, Guardian guardian)

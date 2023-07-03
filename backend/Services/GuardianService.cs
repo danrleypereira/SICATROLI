@@ -1,12 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using backend.Models;
 using Microsoft.AspNetCore.Identity;
+using AutoMapper;
 namespace backend.Services
 {
     public class GuardianService : IGuardianService
     {
         private readonly MyDbContext _context;
         private readonly SignInManager<Guardian> _signInManager;
+        private readonly IMapper _mapper;
+
         public GuardianService(DbContextOptions<MyDbContext> options)
         {
             _context = new MyDbContext(options);
@@ -16,30 +19,35 @@ namespace backend.Services
             Guardian user = _context.guardian.FirstOrDefault(u => u.GuardianId == token);
             return user != null;
         }
-        public async Task<GuardianDto> LoginUserAsync(GuardianDto guardianDto, string token)
+        // public async Task<GuardianDto> LoginUserAsync(GuardianDto guardianDto, string token)
+        // {
+        //     bool isTokenValid = ValidateToken(token);
+        //     var guardian = new Guardian();
+        //     if (isTokenValid)
+        //     {
+        //         await _signInManager.SignInAsync(guardian, isPersistent: false);
+        //     }
+        //     return guardianDto;
+        // }
+        public async Task<GuardianResponseDto> AddGuardianAsync(Guardian guardian, String moderator)
         {
-            bool isTokenValid = ValidateToken(token);
-            var guardian = new Guardian();
-            if (isTokenValid)
-            {
-                await _signInManager.SignInAsync(guardian, isPersistent: false);
-            }
-            return guardianDto;
-        }
-        public async Task<Guardian> AddGuardianAsync(GuardianDto guardianDto, String moderator)
-        {
-            string token = TokenUtils.GenerateToken();
+            //string token = TokenUtils.GenerateToken();
+            CreateGuardianRequestDto guardianRequestDto = new CreateGuardianRequestDto();
+
             Institution institution = _context.Institutions.FirstOrDefault(e => e.ModeratorId == moderator);
             Guardian GuardianEntity = new Guardian
             {
-                GuardianId = token,
-                BookId = guardianDto.BookId,
-                Email = guardianDto.email,
+                //GuardianId = token,
+                BookId = guardianRequestDto.BookId,
+                Email = guardianRequestDto.email,
                 Institution = institution,
             };
             await _context.guardian.AddAsync(GuardianEntity);
             await _context.SaveChangesAsync();
-            return GuardianEntity;
+
+            var responseDto = _mapper.Map<GuardianResponseDto>(GuardianEntity);
+
+            return responseDto;
         }
         public async Task DeleteGuardianAsync(string id)
         {
