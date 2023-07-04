@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Services;
 using backend.Models;
-
 namespace backend.Controllers
 {
     [ApiController]
@@ -9,12 +8,10 @@ namespace backend.Controllers
     public class InstitutionController : ControllerBase
     {
         private readonly IInstitutionService _institutionService;
-
         public InstitutionController(IInstitutionService institutionService)
         {
             _institutionService = institutionService;
         }
-
         [HttpGet("/{moderatorId}")]
         public async Task<ActionResult<InstitutionBodyDto>> GetInstitution(String moderatorId)
         {
@@ -25,9 +22,8 @@ namespace backend.Controllers
             }
             return Ok(institution);
         }
-
         [HttpPost]
-        public async Task<ActionResult<InstitutionDtoRequestBody>> CreateInstitution(
+        public async Task<ActionResult<InstitutionBodyDto>> CreateInstitution(
             [FromHeader] String authorization,
             [FromBody] InstitutionDtoRequestBody institution
         )
@@ -37,9 +33,10 @@ namespace backend.Controllers
                 return Unauthorized();
             }
             InstitutionBodyDto addedInstitution = await _institutionService.CreateInstitutionAsync(institution);
-            return CreatedAtAction(nameof(GetInstitution), new { id = addedInstitution.InstitutionId, moderatorId = addedInstitution.ModeratorId }, addedInstitution);
+            CustomHttpResponse customResponse = new CustomHttpResponse(Response);
+            customResponse.SetBody<InstitutionBodyDto>(addedInstitution, contentType: "application/json");
+            return new EmptyResult();
         }
-
         //starting examples
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Institution>>> GetInstitutions()
@@ -47,7 +44,6 @@ namespace backend.Controllers
             var institutions = await _institutionService.GetInstitutionsAsync();
             return Ok(institutions);
         }
-
         [HttpPut("{id}")]
         public async Task<ActionResult<Institution>> UpdateInstitution(int id, Institution institution)
         {
@@ -55,7 +51,6 @@ namespace backend.Controllers
             {
                 return BadRequest();
             }
-
             var updatedInstitution = await _institutionService.UpdateInstitutionAsync(institution);
             if (updatedInstitution == null)
             {
