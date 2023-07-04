@@ -7,7 +7,7 @@ namespace CleanArchMvc.Application.Mappings
     {
         public EntityToDTOMapping()
         {
-            CreateMap<Institution, CreateInstitutionDto>().ReverseMap();
+            CreateMap<Institution, InstitutionBodyDto>().ReverseMap();
             CreateMap<CreateGuardianRequestDto, Guardian>().ReverseMap();
             CreateMap<Guardian, GuardianResponseDto>()
             .ForMember(dest => dest.GuardianId, opt => opt.MapFrom(src => TokenUtils.GenerateToken())).ReverseMap();

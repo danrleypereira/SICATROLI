@@ -14,20 +14,32 @@ namespace backend.Controllers
         {
             _institutionService = institutionService;
         }
+
+        [HttpGet("getByModeratorId")]
+        public async Task<ActionResult<InstitutionBodyDto>> GetInstitution([FromQuery] String moderatorId)
+        {
+            var institution = await _institutionService.GetInstitutionByIdAsync(moderatorId);
+            if (institution == null)
+            {
+                return NotFound();
+            }
+            return Ok(institution);
+        }
+
         [HttpPost]
-        public async Task<ActionResult<CreateInstitutionDto>> CreateInstitution(
-            [FromHeader] String authorization, 
-            [FromBody] CreateInstitutionDto institution
+        public async Task<ActionResult<InstitutionDtoRequestBody>> CreateInstitution(
+            [FromHeader] String authorization,
+            [FromBody] InstitutionDtoRequestBody institution
         )
         {
             if (!authorization.Contains("sdfgbhn"))
             {
                 return Unauthorized();
             }
-            Institution institutionEntity = new Institution();
-            var addedInstitution = await _institutionService.CreateInstitutionAsync(institution);
-            return CreatedAtAction(nameof(GetInstitution), new { id = institutionEntity.InstitutionId }, addedInstitution);
+            InstitutionBodyDto addedInstitution = await _institutionService.CreateInstitutionAsync(institution);
+            return CreatedAtAction(nameof(GetInstitution), new {moderatorId = addedInstitution.ModeratorId }, addedInstitution);
         }
+
         //starting examples
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Institution>>> GetInstitutions()
@@ -36,16 +48,6 @@ namespace backend.Controllers
             return Ok(institutions);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Institution>> GetInstitution(int id)
-        {
-            var institution = await _institutionService.GetInstitutionByIdAsync(id);
-            if (institution == null)
-            {
-                return NotFound();
-            }
-            return Ok(institution);
-        }
         [HttpPut("{id}")]
         public async Task<ActionResult<Institution>> UpdateInstitution(int id, Institution institution)
         {

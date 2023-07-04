@@ -23,8 +23,16 @@ public class Institution
     public String? Telephone { get; set; }
 }
 
-public class CreateInstitutionDto
+public class InstitutionDtoRequestBody
 {
+    public string Name { get; set; }
+    public string? Telephone { get; set; }
+}
+
+public class InstitutionBodyDto
+{
+    public int InstitutionId { get; set; }
+    public string ModeratorId { get; set; }
     public string Name { get; set; }
     public string? Telephone { get; set; }
 }
