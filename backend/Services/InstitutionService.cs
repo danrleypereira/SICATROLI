@@ -9,7 +9,7 @@ namespace backend.Services
         {
             _context = context;
         }
-        public async Task<CreateInstitutionDto> CreateInstitutionAsync(CreateInstitutionDto institution)
+        public async Task<InstitutionBodyDto> CreateInstitutionAsync(InstitutionDtoRequestBody institution)
         {
             string token = TokenUtils.GenerateToken();
             Institution institutionEntity = new Institution
@@ -22,17 +22,32 @@ namespace backend.Services
             await _context.Institutions.AddAsync(institutionEntity);
             await _context.SaveChangesAsync();
 
-            return institution;
+            return new InstitutionBodyDto
+            {
+                InstitutionId = institutionEntity.InstitutionId,
+                ModeratorId = token,
+                Name = institutionEntity.Name,
+                Telephone = institutionEntity.Telephone
+            };
         }
         //starting examples
         public async Task<IEnumerable<Institution>> GetInstitutionsAsync()
         {
             return await _context.Institutions.ToListAsync();
         }
-        public async Task<Institution> GetInstitutionByIdAsync(int id)
+
+        public async Task<InstitutionBodyDto> GetInstitutionByIdAsync(String moderatorId)
         {
-            return await _context.Institutions.FindAsync(id);
+            Institution institution = _context.Institutions.Where(e => e.ModeratorId == moderatorId).FirstOrDefault();
+            InstitutionBodyDto institutionBodyDto = new InstitutionBodyDto
+            {
+                ModeratorId = institution.ModeratorId,
+                Name = institution.Name,
+                Telephone = institution.Telephone
+            };
+            return institutionBodyDto;
         }
+
         public async Task<Institution> UpdateInstitutionAsync(Institution institution)
         {
             _context.Entry(institution).State = EntityState.Modified;
@@ -51,6 +66,7 @@ namespace backend.Services
             }
             return institution;
         }
+
         public async Task DeleteInstitutionAsync(int id)
         {
             var institution = await _context.Institutions.FindAsync(id);
@@ -65,6 +81,7 @@ namespace backend.Services
         {
             return _context.Institutions.Any(e => e.InstitutionId == id);
         }
+
         public Task<bool> CheckModeratorToken(string authorization)
         {
             string token = authorization.Split(" ")[1];
