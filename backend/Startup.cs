@@ -34,7 +34,7 @@ namespace dal
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IInstitutionService, InstitutionService>();
             services.AddScoped<IGuardianService, GuardianService>();
-            services.AddAutoMapper(typeof(EntityToDTOMapping));
+            services.AddAutoMapper(typeof(EntityToDTOMapping).Assembly);
 
             // Add Swagger generator and UI
             services.AddSwaggerGen(c =>

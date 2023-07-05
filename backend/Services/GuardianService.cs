@@ -29,21 +29,20 @@ namespace backend.Services
         //     }
         //     return guardianDto;
         // }
-        public async Task<GuardianResponseDto> AddGuardianAsync(Guardian guardian, String moderator)
+        public async Task<GuardianResponseDto> AddGuardianAsync(CreateGuardianRequestDto guardianRequestDto, String moderator)
         {
             string token = TokenUtils.GenerateToken();
-            CreateGuardianRequestDto guardianRequestDto = new CreateGuardianRequestDto();
+
+            Guardian GuardianEntity = _mapper.Map<Guardian>(guardianRequestDto);
 
             Institution institution = _context.Institutions.FirstOrDefault(e => e.ModeratorId == moderator);
-            Guardian GuardianEntity = new Guardian
+            if(institution != null)
             {
-                Id = token,
-                BookId = guardianRequestDto.BookId,
-                Email = guardianRequestDto.email,
-                Institution = institution,
-            };
-            await _context.guardian.AddAsync(GuardianEntity);
-            await _context.SaveChangesAsync();
+                GuardianEntity.Id = token;
+                GuardianEntity.Institution = institution;
+                await _context.guardian.AddAsync(GuardianEntity);
+                await _context.SaveChangesAsync();
+            }
             var responseDto = _mapper.Map<GuardianResponseDto>(GuardianEntity);
             return responseDto;
         }

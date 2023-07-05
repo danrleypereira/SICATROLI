@@ -36,10 +36,9 @@ namespace backend.Controllers
             {
                 return Unauthorized();
             }
-            var guardian = _mapper.Map<Guardian>(guardianRequestDto);
-            var addedGuardian = await _guardianService.AddGuardianAsync(guardian, authorization.Split(" ")[1]);
-            var responseDto = _mapper.Map<GuardianResponseDto>(addedGuardian);
-            return CreatedAtAction(nameof(GetGuardian), new { id = addedGuardian.Id }, responseDto);
+            String moderator = authorization.Split(" ")[1];
+            var addedGuardian = await _guardianService.AddGuardianAsync(guardianRequestDto, moderator);
+            return CreatedAtAction(nameof(GetGuardian), new { id = addedGuardian.Id }, addedGuardian);
         }
         [HttpPut("{id}")]
         public async Task<ActionResult<Guardian>> UpdateGuardian(string id, Guardian guardian)

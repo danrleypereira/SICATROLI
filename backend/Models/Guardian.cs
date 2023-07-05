@@ -18,12 +18,12 @@ public class Guardian
 public class CreateGuardianRequestDto
 {
     public int BookId { get; set; }
-    public string Id { get; set; }
-    public string email { get; set; }
+    public string Email { get; set; }
 }
 public class GuardianResponseDto
 {
     public int BookId { get; set; }
     public string Id { get; set; }
-    public string email { get; set; }
+    public string Email { get; set; }
+    public Institution Institution { get; set;} 
 }
