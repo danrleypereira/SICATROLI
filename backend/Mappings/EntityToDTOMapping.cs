@@ -10,7 +10,7 @@ namespace CleanArchMvc.Application.Mappings
             CreateMap<Institution, InstitutionBodyDto>().ReverseMap();
             CreateMap<CreateGuardianRequestDto, Guardian>().ReverseMap();
             CreateMap<Guardian, GuardianResponseDto>()
-            .ForMember(dest => dest.GuardianId, opt => opt.MapFrom(src => TokenUtils.GenerateToken())).ReverseMap();
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => TokenUtils.GenerateToken())).ReverseMap();
         }
     }
 }

@@ -8,7 +8,7 @@ public class Institution
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("institution_id")]
-    public int InstitutionId { get; set; }
+    public int Id { get; set; }
     [Column("moderator_id")]
     public String ModeratorId { get; set; }
     [InverseProperty("Institution")]
@@ -31,7 +31,7 @@ public class InstitutionDtoRequestBody
 
 public class InstitutionBodyDto
 {
-    public int InstitutionId { get; set; }
+    public int Id { get; set; }
     public string ModeratorId { get; set; }
     public string Name { get; set; }
     public string? Telephone { get; set; }

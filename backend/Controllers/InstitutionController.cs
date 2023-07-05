@@ -12,6 +12,7 @@ namespace backend.Controllers
         {
             _institutionService = institutionService;
         }
+
         [HttpGet("/{moderatorId}")]
         public async Task<ActionResult<InstitutionBodyDto>> GetInstitution(String moderatorId)
         {
@@ -22,8 +23,9 @@ namespace backend.Controllers
             }
             return Ok(institution);
         }
+
         [HttpPost]
-        public async Task<ActionResult<InstitutionBodyDto>> CreateInstitution(
+        public async Task<ActionResult<InstitutionDtoRequestBody>> CreateInstitution(
             [FromHeader] String authorization,
             [FromBody] InstitutionDtoRequestBody institution
         )
@@ -33,9 +35,7 @@ namespace backend.Controllers
                 return Unauthorized();
             }
             InstitutionBodyDto addedInstitution = await _institutionService.CreateInstitutionAsync(institution);
-            CustomHttpResponse customResponse = new CustomHttpResponse(Response);
-            customResponse.SetBody<InstitutionBodyDto>(addedInstitution, contentType: "application/json");
-            return new EmptyResult();
+            return CreatedAtAction(nameof(GetInstitution), new { moderatorId = addedInstitution.ModeratorId }, addedInstitution);
         }
 
         //starting examples
@@ -45,10 +45,11 @@ namespace backend.Controllers
             var institutions = await _institutionService.GetInstitutionsAsync();
             return Ok(institutions);
         }
+
         [HttpPut("{id}")]
         public async Task<ActionResult<Institution>> UpdateInstitution(int id, Institution institution)
         {
-            if (id != institution.InstitutionId)
+            if (id != institution.Id)
             {
                 return BadRequest();
             }
