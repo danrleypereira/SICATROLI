@@ -20,4 +20,3 @@ public class Category
     [Column("price")]
     public string Price { get; set; }
 }
-
