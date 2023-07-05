@@ -31,22 +31,20 @@ namespace backend.Services
         // }
         public async Task<GuardianResponseDto> AddGuardianAsync(Guardian guardian, String moderator)
         {
-            //string token = TokenUtils.GenerateToken();
+            string token = TokenUtils.GenerateToken();
             CreateGuardianRequestDto guardianRequestDto = new CreateGuardianRequestDto();
 
             Institution institution = _context.Institutions.FirstOrDefault(e => e.ModeratorId == moderator);
             Guardian GuardianEntity = new Guardian
             {
-                //GuardianId = token,
+                GuardianId = token,
                 BookId = guardianRequestDto.BookId,
                 Email = guardianRequestDto.email,
                 Institution = institution,
             };
             await _context.guardian.AddAsync(GuardianEntity);
             await _context.SaveChangesAsync();
-
             var responseDto = _mapper.Map<GuardianResponseDto>(GuardianEntity);
-
             return responseDto;
         }
         public async Task DeleteGuardianAsync(string id)
@@ -56,7 +54,6 @@ namespace backend.Services
             {
                 throw new ArgumentException($"Guardian with id {id} not found.");
             }
-
             _context.guardian.Remove(Guardian);
             await _context.SaveChangesAsync();
         }

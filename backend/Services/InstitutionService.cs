@@ -47,7 +47,6 @@ namespace backend.Services
             };
             return institutionBodyDto;
         }
-
         public async Task<Institution> UpdateInstitutionAsync(Institution institution)
         {
             _context.Entry(institution).State = EntityState.Modified;

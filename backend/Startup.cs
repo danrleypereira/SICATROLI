@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-
+using AutoMapper;
 using backend.Models;
 using backend.Services;
 using System.Text.Json.Serialization;
+using CleanArchMvc.Application.Mappings;
 
 namespace dal
 {
@@ -33,6 +34,7 @@ namespace dal
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IInstitutionService, InstitutionService>();
             services.AddScoped<IGuardianService, GuardianService>();
+            services.AddAutoMapper(typeof(EntityToDTOMapping));
 
             // Add Swagger generator and UI
             services.AddSwaggerGen(c =>
