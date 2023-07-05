@@ -9,7 +9,7 @@ public class Address
     [Key]
     [Required]
     [Column("address_id")]
-    public int id { get; set; }
+    public int Id { get; set; }
     [Required]
     [Column("number")]
     public int Number { get; set; }

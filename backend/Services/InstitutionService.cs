@@ -24,7 +24,7 @@ namespace backend.Services
 
             return new InstitutionBodyDto
             {
-                InstitutionId = institutionEntity.InstitutionId,
+                Id = institutionEntity.Id,
                 ModeratorId = token,
                 Name = institutionEntity.Name,
                 Telephone = institutionEntity.Telephone
@@ -56,9 +56,9 @@ namespace backend.Services
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!InstitutionExists(institution.InstitutionId))
+                if (!InstitutionExists(institution.Id))
                 {
-                    throw new ArgumentException($"Institution with id {institution.InstitutionId} not found.");
+                    throw new ArgumentException($"Institution with id {institution.Id} not found.");
                 }
 
                 throw;
@@ -78,7 +78,7 @@ namespace backend.Services
         }
         private bool InstitutionExists(int id)
         {
-            return _context.Institutions.Any(e => e.InstitutionId == id);
+            return _context.Institutions.Any(e => e.Id == id);
         }
 
         public Task<bool> CheckModeratorToken(string authorization)

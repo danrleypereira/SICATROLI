@@ -39,12 +39,12 @@ namespace backend.Controllers
             var guardian = _mapper.Map<Guardian>(guardianRequestDto);
             var addedGuardian = await _guardianService.AddGuardianAsync(guardian, authorization.Split(" ")[1]);
             var responseDto = _mapper.Map<GuardianResponseDto>(addedGuardian);
-            return CreatedAtAction(nameof(GetGuardian), new { id = addedGuardian.GuardianId }, responseDto);
+            return CreatedAtAction(nameof(GetGuardian), new { id = addedGuardian.Id }, responseDto);
         }
         [HttpPut("{id}")]
         public async Task<ActionResult<Guardian>> UpdateGuardian(string id, Guardian guardian)
         {
-            if (id != guardian.GuardianId)
+            if (id != guardian.Id)
             {
                 return BadRequest();
             }

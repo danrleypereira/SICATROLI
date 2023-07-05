@@ -16,7 +16,7 @@ namespace backend.Services
         }
         private bool ValidateToken(string token)
         {
-            Guardian user = _context.guardian.FirstOrDefault(u => u.GuardianId == token);
+            Guardian user = _context.guardian.FirstOrDefault(u => u.Id == token);
             return user != null;
         }
         // public async Task<GuardianDto> LoginUserAsync(GuardianDto guardianDto, string token)
@@ -37,7 +37,7 @@ namespace backend.Services
             Institution institution = _context.Institutions.FirstOrDefault(e => e.ModeratorId == moderator);
             Guardian GuardianEntity = new Guardian
             {
-                GuardianId = token,
+                Id = token,
                 BookId = guardianRequestDto.BookId,
                 Email = guardianRequestDto.email,
                 Institution = institution,
@@ -75,9 +75,9 @@ namespace backend.Services
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!GuardianExists(guardian.GuardianId))
+                if (!GuardianExists(guardian.Id))
                 {
-                    throw new ArgumentException($"Guardian with id {guardian.GuardianId} not found.");
+                    throw new ArgumentException($"Guardian with id {guardian.Id} not found.");
                 }
 
                 throw;
@@ -86,7 +86,7 @@ namespace backend.Services
         }
         private bool GuardianExists(string id)
         {
-            return _context.guardian.Any(e => e.GuardianId == id);
+            return _context.guardian.Any(e => e.Id == id);
         }
     }
 }

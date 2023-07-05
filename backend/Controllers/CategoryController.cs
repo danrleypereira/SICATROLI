@@ -37,13 +37,13 @@ namespace backend.Controllers
         public async Task<ActionResult<Category>> AddCategory(Category category)
         {
             var addedCategory = await _categoryService.AddCategoryAsync(category);
-            return CreatedAtAction(nameof(GetCategory), new { id = addedCategory.CategoryId }, addedCategory);
+            return CreatedAtAction(nameof(GetCategory), new { id = addedCategory.Id }, addedCategory);
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<Category>> UpdateCategory(int id, Category category)
         {
-            if (id != category.CategoryId)
+            if (id != category.Id)
             {
                 return BadRequest();
             }

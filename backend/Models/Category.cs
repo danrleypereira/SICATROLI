@@ -8,7 +8,7 @@ public class Category
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("category_id")]
-    public int CategoryId { get; set; }
+    public int Id { get; set; }
     [Column("genre")]
     public string Genre { get; set; }
     [Column("pages")]

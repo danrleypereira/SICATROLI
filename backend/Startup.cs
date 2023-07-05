@@ -23,7 +23,7 @@ namespace dal
             // Add framework services.
             services.AddControllers().AddJsonOptions(options =>
               {
-                  options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                  options.JsonSerializerOptions.ReferenceHandler = null;
               });
 
             // Add PostgreSQL database context
