@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Services;
 using backend.Models;
-
 namespace backend.Controllers
 {
     [ApiController]
@@ -9,14 +8,12 @@ namespace backend.Controllers
     public class InstitutionController : ControllerBase
     {
         private readonly IInstitutionService _institutionService;
-
         public InstitutionController(IInstitutionService institutionService)
         {
             _institutionService = institutionService;
         }
-
-        [HttpGet("getByModeratorId")]
-        public async Task<ActionResult<InstitutionBodyDto>> GetInstitution([FromQuery] String moderatorId)
+        [HttpGet("/{moderatorId}")]
+        public async Task<ActionResult<InstitutionBodyDto>> GetInstitution(String moderatorId)
         {
             var institution = await _institutionService.GetInstitutionByIdAsync(moderatorId);
             if (institution == null)
@@ -25,9 +22,8 @@ namespace backend.Controllers
             }
             return Ok(institution);
         }
-
         [HttpPost]
-        public async Task<ActionResult<InstitutionDtoRequestBody>> CreateInstitution(
+        public async Task<ActionResult<InstitutionBodyDto>> CreateInstitution(
             [FromHeader] String authorization,
             [FromBody] InstitutionDtoRequestBody institution
         )
@@ -37,7 +33,9 @@ namespace backend.Controllers
                 return Unauthorized();
             }
             InstitutionBodyDto addedInstitution = await _institutionService.CreateInstitutionAsync(institution);
-            return CreatedAtAction(nameof(GetInstitution), new {moderatorId = addedInstitution.ModeratorId }, addedInstitution);
+            CustomHttpResponse customResponse = new CustomHttpResponse(Response);
+            customResponse.SetBody<InstitutionBodyDto>(addedInstitution, contentType: "application/json");
+            return new EmptyResult();
         }
 
         //starting examples
@@ -47,7 +45,6 @@ namespace backend.Controllers
             var institutions = await _institutionService.GetInstitutionsAsync();
             return Ok(institutions);
         }
-
         [HttpPut("{id}")]
         public async Task<ActionResult<Institution>> UpdateInstitution(int id, Institution institution)
         {
@@ -55,7 +52,6 @@ namespace backend.Controllers
             {
                 return BadRequest();
             }
-
             var updatedInstitution = await _institutionService.UpdateInstitutionAsync(institution);
             if (updatedInstitution == null)
             {
