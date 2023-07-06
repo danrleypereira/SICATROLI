@@ -13,7 +13,6 @@ namespace backend
                 {
                     webBuilder.UseStartup<Startup>();
                     webBuilder.UseUrls("http://localhost:5000", "https://localhost:5005");
-
                     webBuilder.ConfigureKestrel(serverOptions =>
                     {
                         serverOptions.Limits.MaxRequestBodySize = 52428800; // 50MB
