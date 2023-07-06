@@ -29,15 +29,16 @@ namespace backend.Controllers
         }
         [HttpPost]
         public async Task<ActionResult<GuardianResponseDto>> AddGuardian(
-                [FromBody] CreateGuardianRequestDto guardianRequestDto,
-                [FromHeader] string authorization)
+            [FromBody] CreateGuardianRequestDto guardianRequestDto,
+            [FromHeader] string authorization)
         {
+            var authorization12 = Request.Headers.Authorization;
             if (! (await _institutionService.CheckModeratorToken(authorization)) )
             {
                 return Unauthorized();
             }
-            String moderator = authorization.Split(" ")[1];
-            var addedGuardian = await _guardianService.AddGuardianAsync(guardianRequestDto, moderator);
+            var addedGuardian = await _guardianService.AddGuardianAsync(guardianRequestDto, 
+                authorization.Split(" ")[1]);
             return CreatedAtAction(nameof(GetGuardian), new { id = addedGuardian.Id }, addedGuardian);
         }
         [HttpPut("{id}")]

@@ -1,12 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using backend.Models;
+using AutoMapper;
+
 namespace backend.Services
 {
     public class InstitutionService : IInstitutionService
     {
         private readonly MyDbContext _context;
-        public InstitutionService(MyDbContext context)
+        private readonly IMapper _mapper;
+        public InstitutionService(MyDbContext context, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
         }
         public async Task<InstitutionBodyDto> CreateInstitutionAsync(InstitutionDtoRequestBody institution)
@@ -14,7 +18,7 @@ namespace backend.Services
             string token = TokenUtils.GenerateToken();
             Institution institutionEntity = new Institution
             {
-                guardians = null,
+                Guardians = null,
                 Name = institution.Name,
                 Telephone = institution.Telephone,
                 ModeratorId = token
@@ -39,13 +43,13 @@ namespace backend.Services
         public async Task<InstitutionBodyDto> GetInstitutionByIdAsync(String moderatorId)
         {
             Institution institution = _context.Institutions.Where(e => e.ModeratorId == moderatorId).FirstOrDefault();
-            InstitutionBodyDto institutionBodyDto = new InstitutionBodyDto
-            {
-                ModeratorId = institution.ModeratorId,
-                Name = institution.Name,
-                Telephone = institution.Telephone
-            };
-            return institutionBodyDto;
+            // InstitutionBodyDto institutionBodyDto = new InstitutionBodyDto
+            // {
+            //     ModeratorId = institution.ModeratorId,
+            //     Name = institution.Name,
+            //     Telephone = institution.Telephone
+            // };
+            return _mapper.Map<InstitutionBodyDto>(institution);
         }
         public async Task<Institution> UpdateInstitutionAsync(Institution institution)
         {
@@ -81,10 +85,10 @@ namespace backend.Services
             return _context.Institutions.Any(e => e.Id == id);
         }
 
-        public Task<bool> CheckModeratorToken(string authorization)
+        public async Task<bool> CheckModeratorToken(string authorization)
         {
             string token = authorization.Split(" ")[1];
-            return _context.Institutions.AnyAsync(e => e.ModeratorId == token);
+            return await _context.Institutions.AnyAsync(e => e.ModeratorId == token);
         }
         //ending examples
     }

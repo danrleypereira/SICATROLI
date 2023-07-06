@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace backend.Models;
 [Table("institution")]
@@ -12,7 +13,8 @@ public class Institution
     [Column("moderator_id")]
     public String ModeratorId { get; set; }
     [InverseProperty("Institution")]
-    public ICollection<Guardian>? guardians { get; set; }
+    [JsonIgnore]
+    public ICollection<Guardian>? Guardians { get; set; }
     [Column("name")]
     [Required]
     public string Name { get; set; }

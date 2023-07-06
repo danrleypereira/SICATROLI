@@ -3,10 +3,9 @@ using Microsoft.OpenApi.Models;
 using AutoMapper;
 using backend.Models;
 using backend.Services;
-using System.Text.Json.Serialization;
-using CleanArchMvc.Application.Mappings;
+using backend.Mappings;
 
-namespace dal
+namespace backend
 {
     public class Startup
     {
@@ -23,8 +22,22 @@ namespace dal
             // Add framework services.
             services.AddControllers().AddJsonOptions(options =>
               {
-                  options.JsonSerializerOptions.ReferenceHandler = null;
+                options.JsonSerializerOptions.ReferenceHandler = null;
               });
+            // Auto Mapper Configurations
+            // var config = new MapperConfiguration(cfg => 
+            //     cfg.CreateMap<Guardian, GuardianResponseDto>().ReverseMap()
+            // );
+
+            // var mapper = config.CreateMapper();
+            // var mapperConfig = new MapperConfiguration(mc =>
+            // {
+            //     mc.AddProfile(new EntityToDTOMapping());
+            // });
+            // IMapper mapper = mapperConfig.CreateMapper();
+            // add mapper as singleton
+            // services.AddSingleton(mapper);
+            services.AddAutoMapper(typeof(EntityToDTOMapping).Assembly);
 
             // Add PostgreSQL database context
             services.AddDbContext<MyDbContext>(options =>
@@ -34,7 +47,6 @@ namespace dal
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IInstitutionService, InstitutionService>();
             services.AddScoped<IGuardianService, GuardianService>();
-            services.AddAutoMapper(typeof(EntityToDTOMapping).Assembly);
 
             // Add Swagger generator and UI
             services.AddSwaggerGen(c =>
