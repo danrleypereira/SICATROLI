@@ -1,17 +1,20 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace backend.Models;
 [Table("institution")]
 public class Institution
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("institution_id")]
-    public int InstitutionId { get; set; }
+    public int Id { get; set; }
     [Column("moderator_id")]
-    public String Moderator_id { get; set; }
+    public String ModeratorId { get; set; }
     [InverseProperty("Institution")]
-    public ICollection<Guardian> guardians { get; set; }
+    [JsonIgnore]
+    public ICollection<Guardian>? Guardians { get; set; }
     [Column("name")]
     [Required]
     public string Name { get; set; }
@@ -19,5 +22,19 @@ public class Institution
     //[ForeignKey("address_id")]
     //public Address AddressId { get; set; }
     [Column("telephone")]
-    public String Telephone { get; set; }
+    public String? Telephone { get; set; }
+}
+
+public class InstitutionDtoRequestBody
+{
+    public string Name { get; set; }
+    public string? Telephone { get; set; }
+}
+
+public class InstitutionBodyDto
+{
+    public int Id { get; set; }
+    public string ModeratorId { get; set; }
+    public string Name { get; set; }
+    public string? Telephone { get; set; }
 }

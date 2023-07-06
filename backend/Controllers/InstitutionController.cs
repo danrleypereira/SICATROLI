@@ -1,9 +1,6 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using backend.Services;
 using backend.Models;
-
 namespace backend.Controllers
 {
     [ApiController]
@@ -11,23 +8,15 @@ namespace backend.Controllers
     public class InstitutionController : ControllerBase
     {
         private readonly IInstitutionService _institutionService;
-
         public InstitutionController(IInstitutionService institutionService)
         {
             _institutionService = institutionService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Institution>>> GetInstitutions()
+        [HttpGet("/{moderatorId}")]
+        public async Task<ActionResult<InstitutionBodyDto>> GetInstitution(String moderatorId)
         {
-            var institutions = await _institutionService.GetInstitutionsAsync();
-            return Ok(institutions);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Institution>> GetInstitution(int id)
-        {
-            var institution = await _institutionService.GetInstitutionByIdAsync(id);
+            var institution = await _institutionService.GetInstitutionByIdAsync(moderatorId);
             if (institution == null)
             {
                 return NotFound();
@@ -36,20 +25,34 @@ namespace backend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Institution>> AddInstitution(Institution institution)
+        public async Task<ActionResult<InstitutionDtoRequestBody>> CreateInstitution(
+            [FromHeader] String authorization,
+            [FromBody] InstitutionDtoRequestBody institution
+        )
         {
-            var addedInstitution = await _institutionService.AddInstitutionAsync(institution);
-            return CreatedAtAction(nameof(GetInstitution), new { id = addedInstitution.InstitutionId }, addedInstitution);
+            if (!authorization.Contains("sdfgbhn"))
+            {
+                return Unauthorized();
+            }
+            InstitutionBodyDto addedInstitution = await _institutionService.CreateInstitutionAsync(institution);
+            return CreatedAtAction(nameof(GetInstitution), new { moderatorId = addedInstitution.ModeratorId }, addedInstitution);
+        }
+
+        //starting examples
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Institution>>> GetInstitutions()
+        {
+            var institutions = await _institutionService.GetInstitutionsAsync();
+            return Ok(institutions);
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<Institution>> UpdateInstitution(int id, Institution institution)
         {
-            if (id != institution.InstitutionId)
+            if (id != institution.Id)
             {
                 return BadRequest();
             }
-
             var updatedInstitution = await _institutionService.UpdateInstitutionAsync(institution);
             if (updatedInstitution == null)
             {
@@ -58,5 +61,6 @@ namespace backend.Controllers
 
             return Ok(updatedInstitution);
         }
+        //ending examples
     }
 }

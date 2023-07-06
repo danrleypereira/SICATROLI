@@ -8,8 +8,27 @@ namespace backend.Models
 {
     public class MyDbContext : DbContext
     {
+        public MyDbContext()
+        {
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Institution>()
+                .HasMany(inst => inst.Guardians)
+                .WithOne(guard => guard.Institution)
+                .HasPrincipalKey(inst => inst.Id)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            // modelBuilder.Entity<Guardian>()
+            //     .HasOne(guard => guard.Institution)
+            //     .WithMany(inst => inst.Guardians)
+            //     .HasForeignKey(guard => guard.Institution)
+            //     .HasConstraintName("FK_guardian_institution_institution_id")
+            //     .OnDelete(DeleteBehavior.NoAction);
+        }
+
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options) { }
-        public DbSet<Guardian> Guardian { get; set; }
+        public DbSet<Guardian> guardians { get; set; }
         public DbSet<Institution> Institutions { get; set; }
         public DbSet<Address> Address { get; set; }
         public DbSet<Category> Categories { get; set; }

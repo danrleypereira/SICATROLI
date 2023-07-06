@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using backend.Models;
-using backend.Services;
 
 namespace backend.Services
 {
@@ -45,9 +40,9 @@ namespace backend.Services
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CategoryExists(category.CategoryId))
+                if (!CategoryExists(category.Id))
                 {
-                    throw new ArgumentException($"Category with id {category.CategoryId} not found.");
+                    throw new ArgumentException($"Category with id {category.Id} not found.");
                 }
 
                 throw;
@@ -70,7 +65,7 @@ namespace backend.Services
 
         private bool CategoryExists(int id)
         {
-            return _context.Categories.Any(e => e.CategoryId == id);
+            return _context.Categories.Any(e => e.Id == id);
         }
     }
 }

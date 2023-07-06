@@ -1,58 +1,72 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using backend.Models;
-using backend.Services;
+using AutoMapper;
 
 namespace backend.Services
 {
     public class InstitutionService : IInstitutionService
     {
         private readonly MyDbContext _context;
-
-        public InstitutionService(MyDbContext context)
+        private readonly IMapper _mapper;
+        public InstitutionService(MyDbContext context, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
         }
+        public async Task<InstitutionBodyDto> CreateInstitutionAsync(InstitutionDtoRequestBody institution)
+        {
+            string token = TokenUtils.GenerateToken();
+            Institution institutionEntity = new Institution
+            {
+                Guardians = null,
+                Name = institution.Name,
+                Telephone = institution.Telephone,
+                ModeratorId = token
+            };
+            await _context.Institutions.AddAsync(institutionEntity);
+            await _context.SaveChangesAsync();
 
+            return new InstitutionBodyDto
+            {
+                Id = institutionEntity.Id,
+                ModeratorId = token,
+                Name = institutionEntity.Name,
+                Telephone = institutionEntity.Telephone
+            };
+        }
+        //starting examples
         public async Task<IEnumerable<Institution>> GetInstitutionsAsync()
         {
             return await _context.Institutions.ToListAsync();
         }
 
-        public async Task<Institution> GetInstitutionByIdAsync(int id)
+        public async Task<InstitutionBodyDto> GetInstitutionByIdAsync(String moderatorId)
         {
-            return await _context.Institutions.FindAsync(id);
+            Institution institution = _context.Institutions.Where(e => e.ModeratorId == moderatorId).FirstOrDefault();
+            // InstitutionBodyDto institutionBodyDto = new InstitutionBodyDto
+            // {
+            //     ModeratorId = institution.ModeratorId,
+            //     Name = institution.Name,
+            //     Telephone = institution.Telephone
+            // };
+            return _mapper.Map<InstitutionBodyDto>(institution);
         }
-
-        public async Task<Institution> AddInstitutionAsync(Institution institution)
-        {
-            await _context.Institutions.AddAsync(institution);
-            await _context.SaveChangesAsync();
-
-            return institution;
-        }
-
         public async Task<Institution> UpdateInstitutionAsync(Institution institution)
         {
             _context.Entry(institution).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!InstitutionExists(institution.InstitutionId))
+                if (!InstitutionExists(institution.Id))
                 {
-                    throw new ArgumentException($"Institution with id {institution.InstitutionId} not found.");
+                    throw new ArgumentException($"Institution with id {institution.Id} not found.");
                 }
 
                 throw;
             }
-
             return institution;
         }
 
@@ -63,14 +77,19 @@ namespace backend.Services
             {
                 throw new ArgumentException($"Institution with id {id} not found.");
             }
-
             _context.Institutions.Remove(institution);
             await _context.SaveChangesAsync();
         }
-
         private bool InstitutionExists(int id)
         {
-            return _context.Institutions.Any(e => e.InstitutionId == id);
+            return _context.Institutions.Any(e => e.Id == id);
         }
+
+        public async Task<bool> CheckModeratorToken(string authorization)
+        {
+            string token = authorization.Split(" ")[1];
+            return await _context.Institutions.AnyAsync(e => e.ModeratorId == token);
+        }
+        //ending examples
     }
 }

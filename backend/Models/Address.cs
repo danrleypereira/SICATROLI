@@ -9,7 +9,7 @@ public class Address
     [Key]
     [Required]
     [Column("address_id")]
-    public int id { get; set; }
+    public int Id { get; set; }
     [Required]
     [Column("number")]
     public int Number { get; set; }
@@ -17,16 +17,16 @@ public class Address
     [Column("cep")]
     public int Cep { get; set; }
     [Column("city")]
-    public String City { get; set; }
+    public string? City { get; set; } = "NA";
     [Column("uf")]
     [MaxLength(2), MinLength(2)]
-    public String UF { get; set; }
+    public string? UF { get; set; }  = "NA";
     [Column("neighbourhood")]
-    public String Neighbourhood { get; set; }
+    public string? Neighbourhood { get; set; }  = "NA";
     [Column("country")]
     [MaxLength(30), MinLength(3)]
-    public String Country { get; set; }
+    public string? Country { get; set; }  = "BR";
     [Column("address")]
     [Required]
-    public String Descricao { get; set; }
+    public string? Descricao { get; set; }
 }
